@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: AuthSystem
+  datasource:
+      driver: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost/authsystem
+      username: root
+      password: root
+  server:
+    port: 9090
