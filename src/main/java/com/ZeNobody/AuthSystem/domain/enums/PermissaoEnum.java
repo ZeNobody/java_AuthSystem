@@ -14,14 +14,6 @@ public enum PermissaoEnum {
     private final Integer value;
     private final String descricao;
 
-    public static PermissaoEnum getEnumByValue(Integer value) {
-        for (PermissaoEnum permissao : values()) {
-            if (permissao.getValue().equals(value)) {
-                return permissao;
-            }
-        }
-        throw new IllegalArgumentException("No enum constant with value " + value);
-    }
 }
 
 

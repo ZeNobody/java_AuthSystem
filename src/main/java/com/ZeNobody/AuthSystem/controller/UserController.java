@@ -1,26 +1,25 @@
 package com.ZeNobody.AuthSystem.controller;
 
-import com.ZeNobody.AuthSystem.domain.dto.UserDTO;
+import com.codegen.rest.model.users.*;
+import com.codegen.rest.api.users.V1Api;
+import com.ZeNobody.AuthSystem.mapper.UserControllerMapper;
 import com.ZeNobody.AuthSystem.service.UserService;
-import lombok.AllArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/v1")
-public class UserController {
+public class UserController implements V1Api {
 
     private final UserService userService;
+    private final UserControllerMapper mapper;
 
-    @PostMapping("/create")
-    public ResponseEntity<UserDTO> salvarUsuario(@RequestBody UserDTO user) {
-        var contaSalva = userService.createUser(user);
-        return new ResponseEntity<>(contaSalva, HttpStatus.CREATED);
+    @Override
+    public ResponseEntity<UserResponseRepresentation> createNewUser (@RequestBody NewUserPresentation request) {
+        var service = userService.createUser(mapper.toUserDTO(request));
+        return new ResponseEntity<>(mapper.toUserResponseRepresentation(service), HttpStatus.CREATED);
     }
 }

@@ -1,0 +1,159 @@
+openapi: 3.0.3
+info:
+  title: Auth-System
+  description: Sistema de criação de contas e autenticação
+  version: 1.0.0
+tags:
+  - name: Contas
+servers:
+  - url: http://localhost:8080/
+paths:
+  /v1/create-user:
+    post:
+      tags:
+        - Gerenciamento de contas
+      operationId: createNewUser
+      summary: 'Cria uma nova conta'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUserPresentation'
+        required: true
+      responses:
+        '201':
+          description: Cadastrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseRepresentation'
+        '400':
+          description: Dados de cadastros inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroListPresentation'
+        '422':
+          description: Erros de negócio
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroNegocioPresentation'
+        '500':
+          description: Ocorreu um erro interno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroPresentation'
+components:
+  schemas:
+    NewUserPresentation:
+      type: object
+      required:
+        - nomeUsuario
+        - cpf
+        - email
+        - telefone
+        - senha
+      properties:
+        nomeUsuario:
+          type: string
+          example: "Lorem Ipsum"
+          minLength: 3
+          maxLength: 255
+          pattern: '^[A-Za-zÀ-ÿ0-9\s.,!?:;()&@$#%*-]+$'
+        nuCpf:
+          type: string
+          example: "00000000000"
+          pattern: '^\d{11}$'
+        email:
+          type: string
+          example: "loremIpsum@gmail.com"
+          minLength: 5
+          maxLength: 255
+          pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        telefone:
+          type: string
+          example: "34998825421"
+          pattern: '^\d{11}$'
+        senha:
+          type: string
+          example: "secret"
+          minLength: 5
+          maxLength: 255
+          pattern: '[^<>!;\/\\]+$'
+
+    UserResponseRepresentation:
+      type: object
+      properties:
+        idUsuario:
+          type: integer
+          format: int64
+          example: "21"
+        nome:
+          type: string
+          example: "Lorem Ipsum"
+        cpf:
+          type: string
+          example: "12345678910"
+        email:
+          type: string
+          example: "loremIpsum@gmail.com"
+        telefone:
+          type: string
+          example: "3440028922"
+        permissao:
+          $ref: '#/components/schemas/PermissaoUserRepresentation'
+        ativo:
+          type: boolean
+          example: true
+        dtInclusao:
+          type: string
+          example: "31-07-2024 02:07:52"
+
+    PermissaoUserRepresentation:
+      type: object
+      properties:
+        idPermissao:
+          type: integer
+          example: 1
+        descricao:
+          type: string
+          example: "USER | ADM"
+
+    ErroListPresentation:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 400
+        correlationError:
+          type: string
+          example: "Bad Request"
+        errors:
+          type: array
+          items:
+            type: string
+
+    ErroNegocioPresentation:
+      type: object
+      properties:
+        enumError:
+          type: string
+          example: "ERRO_UNPROCESSABLE_ENTITY"
+        message:
+          type: string
+          example: "Unprocessable Entity"
+
+    ErroPresentation:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 500
+        message:
+          type: string
+          example: "Erro de validacao"
+        correlationError:
+          type: string
+          example: "ERRO_PARAMETROS_INVALIDOS"
