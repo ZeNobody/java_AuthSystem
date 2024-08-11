@@ -4,21 +4,21 @@ info:
   description: Sistema de criação de contas e autenticação
   version: 1.0.0
 tags:
-  - name: Contas
+  - name: Autenticação
 servers:
   - url: http://localhost:8080/
 paths:
-  /v1/user-info/create-user:
+  /v1/authentication/login:
     post:
       tags:
-        - Gerenciamento de contas
-      operationId: createNewUser
-      summary: 'Cria uma nova conta'
+        - Efetuar login
+      operationId: login
+      summary: 'Realiza o login'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NewUserPresentation'
+              $ref: '#/components/schemas/LoginPresentation'
         required: true
       responses:
         '201':
@@ -26,9 +26,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserResponseRepresentation'
+                $ref: '#/components/schemas/LoginRepresentation'
         '400':
-          description: Dados de cadastros inválidos
+          description: Dados inválidos
           content:
             application/json:
               schema:
@@ -47,35 +47,18 @@ paths:
                 $ref: '#/components/schemas/ErroPresentation'
 components:
   schemas:
-    NewUserPresentation:
+    LoginPresentation:
       type: object
       required:
-        - nomeUsuario
-        - cpf
         - email
-        - telefone
         - senha
       properties:
-        nomeUsuario:
-          type: string
-          example: "Lorem Ipsum"
-          minLength: 3
-          maxLength: 255
-          pattern: '^[A-Za-zÀ-ÿ0-9\s.,!?:;()&@$#%*-]+$'
-        nuCpf:
-          type: string
-          example: "00000000000"
-          pattern: '^\d{11}$'
         email:
           type: string
           example: "loremIpsum@gmail.com"
           minLength: 5
           maxLength: 255
           pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-        telefone:
-          type: string
-          example: "34998825421"
-          pattern: '^\d{11}$'
         senha:
           type: string
           example: "secret"
@@ -83,43 +66,14 @@ components:
           maxLength: 255
           pattern: '[^<>!;\/\\]+$'
 
-    UserResponseRepresentation:
+    LoginRepresentation:
       type: object
       properties:
-        idUsuario:
+        token:
+          type: string
+        expiresIn:
           type: integer
           format: int64
-          example: "21"
-        nome:
-          type: string
-          example: "Lorem Ipsum"
-        cpf:
-          type: string
-          example: "12345678910"
-        email:
-          type: string
-          example: "loremIpsum@gmail.com"
-        telefone:
-          type: string
-          example: "3440028922"
-        permissao:
-          $ref: '#/components/schemas/PermissaoUserRepresentation'
-        ativo:
-          type: boolean
-          example: true
-        dtInclusao:
-          type: string
-          example: "31-07-2024 02:07:52"
-
-    PermissaoUserRepresentation:
-      type: object
-      properties:
-        idPermissao:
-          type: integer
-          example: 1
-        descricao:
-          type: string
-          example: "USER | ADM"
 
     ErroListPresentation:
       type: object
