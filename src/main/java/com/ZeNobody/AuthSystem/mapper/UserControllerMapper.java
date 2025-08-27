@@ -2,6 +2,7 @@ package com.ZeNobody.AuthSystem.mapper;
 
 import com.ZeNobody.AuthSystem.domain.dto.UserDTO;
 import com.ZeNobody.AuthSystem.domain.enums.PermissaoEnum;
+import com.ZeNobody.AuthSystem.utils.DataUtil;
 import com.codegen.rest.model.users.NewUserPresentation;
 import com.codegen.rest.model.users.PermissaoUserRepresentation;
 import com.codegen.rest.model.users.UserResponseRepresentation;
@@ -29,7 +30,7 @@ public class UserControllerMapper {
         response.setTelefone(user.getTelefone());
         response.setPermissao(toPermissaoUserRepresentation(user.getPermissaoEnum()));
         response.setAtivo(true);
-        response.setDtInclusao(user.getDtInclusao().toString());
+        response.setDtInclusao(DataUtil.formatLocalDateTime(user.getDtInclusao()));
         return response;
     }
 

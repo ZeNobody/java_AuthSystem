@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ErrosEnum {
 
-    ERRO_NOT_FOUND("Não foi possível encontrar o caminho solicitado", HttpStatus.NOT_FOUND);
+    ERROR_NOT_FOUND("Não foi possível encontrar o caminho solicitado", HttpStatus.NOT_FOUND),
+    ERROR_INTERNAL_SERVER("Erro interno!", HttpStatus.INTERNAL_SERVER_ERROR);
     //ADICIONAR ERROS
 
 

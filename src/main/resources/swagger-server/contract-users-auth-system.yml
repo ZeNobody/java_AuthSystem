@@ -45,6 +45,67 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErroPresentation'
+
+  /v1/user-info/find-user/{document}:
+    get:
+      tags:
+        - Gerenciamento de contas
+      operationId: findUserByDocument
+      summary: Procura por usuário usando por CPF
+      description: 'Busca o cadastro do usuário no sistema'
+      parameters:
+        - name: document
+          in: path
+          description: 'Documento do usuário.'
+          required: true
+          schema:
+            type: string
+            pattern: '^\d{11}$'
+      responses:
+        '200':
+          description: Usuário encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCPFResponseRepresentation'
+        '400':
+          description: Dados de entrada inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroListPresentation'
+        '500':
+          description: Ocorreu um erro interno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroPresentation'
+  /v1/user-info/logged-user:
+    get:
+      tags:
+        - Gerenciamento de contas
+      operationId: findUserByLogin
+      summary: Procura por usuário usando por apartir dos dados do JWT
+      description: 'Busca o cadastro do usuário no sistema'
+      responses:
+        '200':
+          description: Usuário encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseRepresentation'
+        '400':
+          description: Dados de entrada inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroListPresentation'
+        '500':
+          description: Ocorreu um erro interno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroPresentation'
 components:
   schemas:
     NewUserPresentation:
@@ -110,6 +171,36 @@ components:
         dtInclusao:
           type: string
           example: "31-07-2024 02:07:52"
+
+    UserCPFResponseRepresentation:
+      type: object
+      properties:
+        cdPessoa:
+          type: integer
+          format: int64
+          example: "155"
+        nome:
+          type: string
+          example: "Gabriel"
+        cpf:
+          type: string
+          example: "00000000000"
+        email:
+          type: string
+          example: "teste@gmail.com"
+        telefone:
+          type: string
+          example: "34998825421"
+        permissao:
+          $ref: '#/components/schemas/PermissaoUserRepresentation'
+        flAtivo:
+          type: boolean
+        dataInclusao:
+          type: string
+          example: "01-10-2024 00:00:00"
+        dataAlteracao:
+          type: string
+          example: "01-10-2024 00:00:00"
 
     PermissaoUserRepresentation:
       type: object
