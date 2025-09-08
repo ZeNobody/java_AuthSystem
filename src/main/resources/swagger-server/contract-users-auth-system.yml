@@ -80,32 +80,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErroPresentation'
-  /v1/user-info/logged-user:
-    get:
-      tags:
-        - Gerenciamento de contas
-      operationId: findUserByLogin
-      summary: Procura por usuário usando por apartir dos dados do JWT
-      description: 'Busca o cadastro do usuário no sistema'
-      responses:
-        '200':
-          description: Usuário encontrado
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserResponseRepresentation'
-        '400':
-          description: Dados de entrada inválidos
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErroListPresentation'
-        '500':
-          description: Ocorreu um erro interno
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErroPresentation'
 components:
   schemas:
     NewUserPresentation:
@@ -175,7 +149,7 @@ components:
     UserCPFResponseRepresentation:
       type: object
       properties:
-        cdPessoa:
+        idUsuario:
           type: integer
           format: int64
           example: "155"
@@ -193,12 +167,12 @@ components:
           example: "34998825421"
         permissao:
           $ref: '#/components/schemas/PermissaoUserRepresentation'
-        flAtivo:
+        ativo:
           type: boolean
-        dataInclusao:
+        dtInclusao:
           type: string
           example: "01-10-2024 00:00:00"
-        dataAlteracao:
+        dtAlteracao:
           type: string
           example: "01-10-2024 00:00:00"
 

@@ -5,6 +5,7 @@ import com.ZeNobody.AuthSystem.domain.enums.PermissaoEnum;
 import com.ZeNobody.AuthSystem.utils.DataUtil;
 import com.codegen.rest.model.users.NewUserPresentation;
 import com.codegen.rest.model.users.PermissaoUserRepresentation;
+import com.codegen.rest.model.users.UserCPFResponseRepresentation;
 import com.codegen.rest.model.users.UserResponseRepresentation;
 import org.springframework.stereotype.Component;
 
@@ -38,6 +39,19 @@ public class UserControllerMapper {
         var response = new PermissaoUserRepresentation();
         response.setIdPermissao(permissao.getValue());
         response.setDescricao(permissao.getDescricao());
+        return response;
+    }
+
+    public UserCPFResponseRepresentation toUserCPFResponseRepresentation (UserDTO user) {
+        var response = new UserCPFResponseRepresentation();
+        response.setIdUsuario(user.getIdUsuario());
+        response.setNome(user.getNomeUsuario());
+        response.setCpf(user.getNuCpf());
+        response.setEmail(user.getEmail());
+        response.setTelefone(user.getTelefone());
+        response.setPermissao(toPermissaoUserRepresentation(user.getPermissaoEnum()));
+        response.setAtivo(true);
+        response.setDtInclusao(DataUtil.formatLocalDateTime(user.getDtInclusao()));
         return response;
     }
 }

@@ -22,4 +22,10 @@ public class UserController implements V1Api {
         var service = userService.createUser(mapper.toUserDTO(request));
         return new ResponseEntity<>(mapper.toUserResponseRepresentation(service), HttpStatus.CREATED);
     }
+
+    @Override
+    public ResponseEntity<UserCPFResponseRepresentation> findUserByDocument(String document) {
+        var user = userService.findUserByCpf(document);
+        return new ResponseEntity<>(mapper.toUserCPFResponseRepresentation(user), HttpStatus.OK);
+    }
 }
